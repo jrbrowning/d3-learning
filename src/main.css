@@ -1,4 +1,8 @@
-.container {
+.line-container {
   max-width: 100%;
   border: 2px solid red;
+}
+.scatter-container {
+  max-width: 100%;
+  border: 2px solid blue;
 }

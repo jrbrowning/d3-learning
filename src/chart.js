@@ -30,7 +30,7 @@ async function drawLineChart() {
     - dimensions.margin.bottom;
 
   // 3. Draw Canvas
-  const wrapper = d3.select("#wrapper")
+  const wrapper = d3.select("#line")
       .append("svg")
           .attr("width", dimensions.width)
           .attr("height", dimensions.height);
@@ -100,4 +100,15 @@ async function drawLineChart() {
           }px)`)
 
 }
-drawLineChart()
+
+async function drawScatterPlot() {
+  const dataset = await d3.json("./json/my_dc_weather_data.json");
+
+  // 1. Access data
+  const yAccessor = d => d.dewPoint;
+  const xAccessor = d => d.humidity;
+
+};
+
+drawLineChart();
+drawScatterPlot();
