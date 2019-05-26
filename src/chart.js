@@ -7,31 +7,34 @@ async function drawLineChart() {
   const dateParser = d3.timeParse("%Y-%m-%d")
   const xAccessor = d => dateParser(d.date)
 
-  // 2. Create chart dimensions
+  console.table(dataset[100]);
 
-  let dimensions = {
+  // 2. Create chart dimensions
+  const dimensions = {
     width: window.innerWidth * 0.9,
     height: 400,
     margin: {
       top: 15,
       right: 15,
-      bottom: 40,
-      left: 60,
+      bottom: 40, 
+      left: 60
     },
-  }
+  };
+
   dimensions.boundedWidth = dimensions.width
     - dimensions.margin.left
-    - dimensions.margin.right
+    - dimensions.margin.right;
+
   dimensions.boundedHeight = dimensions.height
     - dimensions.margin.top
-    - dimensions.margin.bottom
+    - dimensions.margin.bottom;
 
-  // 3. Draw canvas
-
+  // 3. Draw Canvas
   const wrapper = d3.select("#wrapper")
-    .append("svg")
-      .attr("width", dimensions.width)
-      .attr("height", dimensions.height)
+      .append("svg")
+          .attr("width", dimensions.width)
+          .attr("height", dimensions.height);
+
 
   const bounds = wrapper.append("g")
       .style("transform", `translate(${
@@ -40,51 +43,61 @@ async function drawLineChart() {
         dimensions.margin.top
       }px)`)
 
-  // 4. Create scales
+  // 4.  Create Scales
 
   const yScale = d3.scaleLinear()
-    .domain(d3.extent(dataset, yAccessor))
-    .range([dimensions.boundedHeight, 0])
+      .domain(d3.extent(dataset, yAccessor))
+      .range([dimensions.boundedHeight, 0])
 
-  const freezingTemperaturePlacement = yScale(32)
-  const freezingTemperatures = bounds.append("rect")
-      .attr("x", 0)
+  const freezingTemperaturePlacement = yScale(32);
+  const freezingTemperature = bounds.append("rect")
+      .attr("x",0)
       .attr("width", dimensions.boundedWidth)
       .attr("y", freezingTemperaturePlacement)
       .attr("height", dimensions.boundedHeight
-        - freezingTemperaturePlacement)
-      .attr("fill", "#e0f3f3")
+        -freezingTemperaturePlacement)
+      .attr("fill","#7FCCFF");
+
+  const tooHotPlacement = yScale(80);
+  const tooHotTemp = bounds.append("rect")
+      .attr("x",0)
+      .attr("width", dimensions.boundedWidth)
+      .attr("y", 0)
+      .attr("height", tooHotPlacement)
+      .attr("fill", "#E56956")
 
   const xScale = d3.scaleTime()
-    .domain(d3.extent(dataset, xAccessor))
-    .range([0, dimensions.boundedWidth])
+      .domain(d3.extent(dataset, xAccessor))
+      .range([0, dimensions.boundedWidth]);
 
-  // 5. Draw data
+  // 5. Draw Data
 
   const lineGenerator = d3.line()
-    .x(d => xScale(xAccessor(d)))
-    .y(d => yScale(yAccessor(d)))
+      .x(d => xScale(xAccessor(d)))
+      .y(d => yScale(yAccessor(d)));
 
   const line = bounds.append("path")
       .attr("d", lineGenerator(dataset))
       .attr("fill", "none")
       .attr("stroke", "#af9358")
-      .attr("stroke-width", 2)
+      .attr("stroke-width", 2);
 
-  // 6. Draw peripherals
+  // 6. Draw Peripherials (axis)
 
   const yAxisGenerator = d3.axisLeft()
     .scale(yScale)
 
-  const yAxis = bounds.call(yAxisGenerator)
+  const yAxis = bounds.append("g")
+      .call(yAxisGenerator);
 
   const xAxisGenerator = d3.axisBottom()
-    .scale(xScale)
+      .scale(xScale)
 
   const xAxis = bounds.append("g")
-    .call(xAxisGenerator)
-      .style("transform", `translateY(${
-        dimensions.boundedHeight
-      }px)`)
+      .call(xAxisGenerator)
+          .style("transform", `translateY(${
+            dimensions.boundedHeight
+          }px)`)
+
 }
 drawLineChart()
