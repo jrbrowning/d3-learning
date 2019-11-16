@@ -2,6 +2,7 @@ async function drawLineChart() {
 
   // 1. Access data
   const dataset = await d3.json("./json/my_dc_weather_data.json");
+  console.table(dataset[364]);
 
   const yAccessor = d => d.temperatureMax
   const dateParser = d3.timeParse("%Y-%m-%d")
@@ -22,10 +23,10 @@ async function drawLineChart() {
   };
 
   const lineColors = {
-    hot: "#CFCA4C",
-    cold: "#5EB299",
-    line: "#745A33"
-  }
+    hot: "#BF571B",
+    cold: "#5A6B8C",
+    line: "#F2B544"
+  };
   dimensions.boundedWidth = dimensions.width
     - dimensions.margin.left
     - dimensions.margin.right;
