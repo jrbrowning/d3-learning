@@ -21,6 +21,11 @@ async function drawLineChart() {
     },
   };
 
+  const lineColors = {
+    hot: "#CFCA4C",
+    cold: "#5EB299",
+    line: "#745A33"
+  }
   dimensions.boundedWidth = dimensions.width
     - dimensions.margin.left
     - dimensions.margin.right;
@@ -56,7 +61,7 @@ async function drawLineChart() {
       .attr("y", freezingTemperaturePlacement)
       .attr("height", dimensions.boundedHeight
         -freezingTemperaturePlacement)
-      .attr("fill","#7FCCFF");
+      .attr("fill",lineColors.cold);
 
   const tooHotPlacement = yScale(80);
   const tooHotTemp = bounds.append("rect")
@@ -64,7 +69,7 @@ async function drawLineChart() {
       .attr("width", dimensions.boundedWidth)
       .attr("y", 0)
       .attr("height", tooHotPlacement)
-      .attr("fill", "#E56956")
+      .attr("fill", lineColors.hot)
 
   const xScale = d3.scaleTime()
       .domain(d3.extent(dataset, xAccessor))
@@ -79,7 +84,7 @@ async function drawLineChart() {
   const line = bounds.append("path")
       .attr("d", lineGenerator(dataset))
       .attr("fill", "none")
-      .attr("stroke", "#af9358")
+      .attr("stroke", lineColors.line)
       .attr("stroke-width", 2);
 
   // 6. Draw Peripherials (axis)
