@@ -56,3 +56,6 @@ yarn-error.log*
 
 # Temporary Files during debuggging
 /src/tmp
+
+# Python location file
+src/json/get_weather_data.py
