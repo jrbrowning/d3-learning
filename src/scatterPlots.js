@@ -4,6 +4,7 @@ async function drawScatterPlot() {
   // 1. Access data
   const yAccessor = d => d.dewPoint;
   const xAccessor = d => d.humidity;
+  const colorAccessor = d => d.cloudCover;
 
   // 2. Create Chart Dimensions
 
@@ -57,6 +58,10 @@ async function drawScatterPlot() {
     .range([dimensions.boundedHeight, 0])
     .nice();
 
+  const colorScale = d3.scaleLinear()
+    .domain(d3.extent(dataset, colorAccessor))
+    .range(['skyblue', 'darkslategrey']);
+
   // 5. Draw the Data
 
   function drawDots(dataset, color) {
@@ -76,7 +81,7 @@ async function drawScatterPlot() {
 
   }
 
-  drawDots(dataset, "cornFlowerBlue");
+  drawDots(dataset, d => colorScale(colorAccessor(d)));
 
   // 6. Draw Peripherals
 
