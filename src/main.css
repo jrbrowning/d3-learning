@@ -1,0 +1,7 @@
+.line-container, .scatter-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border: 1px solid #f5c9a3;
+  margin: 20px
+}

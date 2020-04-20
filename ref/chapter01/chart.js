@@ -60,7 +60,7 @@ async function drawLineChart() {
     .range([0, dimensions.boundedWidth])
 
   // 5. Draw data
-
+  
   const lineGenerator = d3.line()
     .x(d => xScale(xAccessor(d)))
     .y(d => yScale(yAccessor(d)))
@@ -87,4 +87,4 @@ async function drawLineChart() {
         dimensions.boundedHeight
       }px)`)
 }
-drawLineChart()
+drawLineChart();

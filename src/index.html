@@ -2,11 +2,17 @@
 <html lang="en">
     <head>
         <title>D3 weather timeline</title>
+        <link rel="stylesheet" href="./main.css">
     </head>
     <body>
-        <div id="wrapper"></div>
-
+        <div class="scatter-container">
+            <div class="scatter-plot__content" id="scatter-plot"></div>
+        </div>
+        <div class="line-container">
+            <div id="line-plot"></div>
+        </div>
         <script src="./d3/d3.v5.js"></script>
-        <script src="./chart.js"></script>
+        <script src="./lineGraph.js"></script>
+        <script src="./scatterPlots.js"></script>
     </body>
 </html>

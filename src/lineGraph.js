@@ -1,13 +1,13 @@
 async function drawLineChart() {
 
   // 1. Access data
+  // const dataset = await d3.json(`https://covidtracking.com/api/states/daily?state=DC`);
+
   const dataset = await d3.json("./json/my_dc_weather_data.json");
 
   const yAccessor = d => d.temperatureMax
   const dateParser = d3.timeParse("%Y-%m-%d")
   const xAccessor = d => dateParser(d.date)
-
-  console.table(dataset[100]);
 
   // 2. Create chart dimensions
   const dimensions = {
@@ -21,6 +21,11 @@ async function drawLineChart() {
     },
   };
 
+  const lineColors = {
+    hot: "#BF571B",
+    cold: "#5A6B8C",
+    line: "#F2B544"
+  };
   dimensions.boundedWidth = dimensions.width
     - dimensions.margin.left
     - dimensions.margin.right;
@@ -30,7 +35,7 @@ async function drawLineChart() {
     - dimensions.margin.bottom;
 
   // 3. Draw Canvas
-  const wrapper = d3.select("#wrapper")
+  const wrapper = d3.select("#line-plot")
       .append("svg")
           .attr("width", dimensions.width)
           .attr("height", dimensions.height);
@@ -54,9 +59,9 @@ async function drawLineChart() {
       .attr("x",0)
       .attr("width", dimensions.boundedWidth)
       .attr("y", freezingTemperaturePlacement)
-      .attr("height", dimensions.boundedHeight
-        -freezingTemperaturePlacement)
-      .attr("fill","#7FCCFF");
+      .attr("height", d3.max([0, dimensions.boundedHeight
+        -freezingTemperaturePlacement]))
+      .attr("fill",lineColors.cold);
 
   const tooHotPlacement = yScale(80);
   const tooHotTemp = bounds.append("rect")
@@ -64,7 +69,7 @@ async function drawLineChart() {
       .attr("width", dimensions.boundedWidth)
       .attr("y", 0)
       .attr("height", tooHotPlacement)
-      .attr("fill", "#E56956")
+      .attr("fill", lineColors.hot)
 
   const xScale = d3.scaleTime()
       .domain(d3.extent(dataset, xAccessor))
@@ -79,7 +84,7 @@ async function drawLineChart() {
   const line = bounds.append("path")
       .attr("d", lineGenerator(dataset))
       .attr("fill", "none")
-      .attr("stroke", "#af9358")
+      .attr("stroke", lineColors.line)
       .attr("stroke-width", 2);
 
   // 6. Draw Peripherials (axis)
@@ -87,17 +92,16 @@ async function drawLineChart() {
   const yAxisGenerator = d3.axisLeft()
     .scale(yScale)
 
-  const yAxis = bounds.append("g")
-      .call(yAxisGenerator);
-
   const xAxisGenerator = d3.axisBottom()
       .scale(xScale)
 
-  const xAxis = bounds.append("g")
-      .call(xAxisGenerator)
+  bounds.append("g").call(yAxisGenerator);
+
+  bounds.append("g").call(xAxisGenerator)
           .style("transform", `translateY(${
             dimensions.boundedHeight
           }px)`)
 
 }
-drawLineChart()
+
+drawLineChart();
