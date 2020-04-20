@@ -1,14 +1,13 @@
 async function drawLineChart() {
 
   // 1. Access data
+  // const dataset = await d3.json(`https://covidtracking.com/api/states/daily?state=DC`);
+
   const dataset = await d3.json("./json/my_dc_weather_data.json");
-  console.table(dataset[364]);
 
   const yAccessor = d => d.temperatureMax
   const dateParser = d3.timeParse("%Y-%m-%d")
   const xAccessor = d => dateParser(d.date)
-
-  console.table(dataset[100]);
 
   // 2. Create chart dimensions
   const dimensions = {
@@ -36,7 +35,7 @@ async function drawLineChart() {
     - dimensions.margin.bottom;
 
   // 3. Draw Canvas
-  const wrapper = d3.select("#line")
+  const wrapper = d3.select("#line-plot")
       .append("svg")
           .attr("width", dimensions.width)
           .attr("height", dimensions.height);
@@ -60,8 +59,8 @@ async function drawLineChart() {
       .attr("x",0)
       .attr("width", dimensions.boundedWidth)
       .attr("y", freezingTemperaturePlacement)
-      .attr("height", dimensions.boundedHeight
-        -freezingTemperaturePlacement)
+      .attr("height", d3.max([0, dimensions.boundedHeight
+        -freezingTemperaturePlacement]))
       .attr("fill",lineColors.cold);
 
   const tooHotPlacement = yScale(80);
@@ -93,28 +92,16 @@ async function drawLineChart() {
   const yAxisGenerator = d3.axisLeft()
     .scale(yScale)
 
-  const yAxis = bounds.append("g")
-      .call(yAxisGenerator);
-
   const xAxisGenerator = d3.axisBottom()
       .scale(xScale)
 
-  const xAxis = bounds.append("g")
-      .call(xAxisGenerator)
+  bounds.append("g").call(yAxisGenerator);
+
+  bounds.append("g").call(xAxisGenerator)
           .style("transform", `translateY(${
             dimensions.boundedHeight
           }px)`)
 
 }
 
-async function drawScatterPlot() {
-  const dataset = await d3.json("./json/my_dc_weather_data.json");
-
-  // 1. Access data
-  const yAccessor = d => d.dewPoint;
-  const xAccessor = d => d.humidity;
-
-};
-
 drawLineChart();
-drawScatterPlot();
