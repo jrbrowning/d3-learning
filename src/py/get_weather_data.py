@@ -3,7 +3,7 @@ import datetime
 import json
 import urllib.request
 
-apikey = "cfd48e12bc9b552e2cfe9560e3084cb5"
+apikey = ""
 lat = 38.9388026
 long = -77.0630926
 

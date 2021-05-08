@@ -8,6 +8,7 @@
 
 # production
 /build
+/dist
 
 # misc
 .DS_Store
@@ -58,4 +59,4 @@ yarn-error.log*
 /src/tmp
 
 # Python location file
-src/json/get_weather_data.py
+src/json/*
